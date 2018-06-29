@@ -28,14 +28,20 @@ namespace ImageGrabber
             }
         }
 
-        private void DownloadButton_Click(object sender, EventArgs e)
+        private async void DownloadButton_Click(object sender, EventArgs e)
         {
             DialogResult result = folderSelector.ShowDialog();
             string folderName;
             if (result == DialogResult.OK)
             {
                 folderName = folderSelector.SelectedPath;
-                DataFetcher.DownloadImagesFromPageAsync(UrlBox.Text, folderName);
+                CheckButton.Enabled = false;
+                DownloadButton.Enabled = false;
+                DownloadingLabel.Visible = true;
+                await DataFetcher.DownloadImagesFromPageAsync(UrlBox.Text, folderName);
+                DownloadingLabel.Visible = false;
+                CheckButton.Enabled = true;
+                DownloadButton.Enabled = true;
             }
         }
     }
